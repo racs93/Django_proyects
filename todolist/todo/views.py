@@ -19,7 +19,10 @@ def addTodo(request):
 
 def completeTodo(request, todo_id):
 	todo = Todo.objects.get(pk=todo_id)
-	todo.complete = True
+	if todo.complete:
+		todo.complete = False
+	else:
+		todo.complete = True
 	todo.save()
 	return redirect ('index')
 

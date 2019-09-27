@@ -23,3 +23,7 @@ def completeTodo(request, todo_id):
 	todo.save()
 
 	return redirect ('index')
+
+def deleteCompleted(request):
+	Todo.objects.filter(complete__exact=True).delete()
+	return redirect('index')

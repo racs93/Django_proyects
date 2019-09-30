@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from .models import Todo
-from .forms import TodoForm, NewTodoForm
+from .forms import TodoForm, NewTodoForm, UpdateTodoForm
 
 def index(request):
 	todo_list = Todo.objects.order_by('id')
@@ -13,12 +13,20 @@ def index(request):
 @require_POST
 def addTodo(request):
 	# form = TodoForm(request.POST)
-	todo_10 = Todo.objects.get(pk=8)
-	newtodoform = NewTodoForm(request.POST, instance=todo_10)
+	# todo_10 = Todo.objects.get(pk=8)
+	newtodoform = NewTodoForm(request.POST)
 	if newtodoform.is_valid():
 		# new_todo = Todo(text=form.cleaned_data['text'])
 		# new_todo.save()
 		new_todo = newtodoform.save()
+	return redirect('index')
+
+@require_POST
+def updateLastTodo(request):
+	updatetodo = Todo.objects.order_by('-pk')[0]
+	updatetodoform = UpdateTodoForm(request.POST, instance=updatetodo)
+	if updatetodoform.is_valid():
+		new_todo = updatetodoform.save()
 	return redirect('index')
 
 def completeTodo(request, todo_id):

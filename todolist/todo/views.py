@@ -6,7 +6,6 @@ import datetime
 
 def index(request):
 	todo_list = Todo.objects.order_by('id')
-	# form = TodoForm()
 	newtodoform = NewTodoForm()
 	mydate = datetime.datetime.now()
 	context = {'todo_list' : todo_list, 'form' : newtodoform, 'mydate' : mydate}
@@ -14,12 +13,8 @@ def index(request):
 
 @require_POST
 def addTodo(request):
-	# form = TodoForm(request.POST)
-	# todo_10 = Todo.objects.get(pk=8)
 	newtodoform = NewTodoForm(request.POST)
 	if newtodoform.is_valid():
-		# new_todo = Todo(text=form.cleaned_data['text'])
-		# new_todo.save()
 		new_todo = newtodoform.save()
 	return redirect('index')
 
